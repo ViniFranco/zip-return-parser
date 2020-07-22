@@ -178,7 +178,9 @@ class Handler
     $this->archive->close();
 
     // Remove do diretório temporário
-    unlink($this->temporaryFile);
+    if (!empty($this->temporaryFile)) {
+      unlink($this->temporaryFile);
+    }
 
     // Caso exista, remove o arquivo temporário de base64
     if (!empty($this->base64TemporaryFile)) {
