@@ -40,6 +40,23 @@ class Handler
     $this->archive = new ZipArchive();
   }
 
+  /**
+   * Adiciona o arquivo a partir de uma string base64
+   *
+   * @param string $base64
+   * @return Handler
+   */
+  public function fromBase64($base64)
+  {
+    return $this->fromData(base64_decode($base64));
+  }
+
+  /**
+   * Salva um arquivo temporário no sistema para tratamento
+   *
+   * @param string $data
+   * @return Handler
+   */
   public function fromData($data)
   {
     // Gera um nome de arquivo temporário
@@ -60,12 +77,23 @@ class Handler
     return $this;
   }
 
+  /**
+   * Abre o arquivo ZIP temporário
+   *
+   * @return Handler
+   */
   public function make()
   {
     $this->archive->open($this->temporaryFile, ZipArchive::CREATE);
     return $this;
   }
 
+  /**
+   * Define o arquivo atual a ser usado para trabalhar
+   *
+   * @param integer $index
+   * @return Handler
+   */
   public function use(int $index = 0)
   {
     $this->current = $this->archive->getNameIndex($index);
@@ -89,6 +117,11 @@ class Handler
     return false;
   }
 
+  /**
+   * Remove o arquivo temporário do sistema
+   *
+   * @return Handler
+   */
   public function clean()
   {
     // Fecha o arquivo ZIP
