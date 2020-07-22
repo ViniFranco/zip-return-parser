@@ -29,6 +29,13 @@ class Handler
   protected $temporaryFile;
 
   /**
+   * Caminho para o arquivo temporário em base64
+   *
+   * @var string
+   */
+  protected $base64TemporaryFile;
+
+  /**
    * Arquivo atual a ser processado
    *
    * @var string
@@ -48,7 +55,21 @@ class Handler
    */
   public function fromBase64($base64)
   {
-    return $this->fromData(base64_decode($base64));
+    $temporaryFileName =
+      'zip-return-parser-' .
+      Carbon::now('America/Fortaleza')->getTimestamp() .
+      '.dat';
+
+    // Salva o conteúdo em um arquivo temporário
+    $temporary = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $temporaryFileName;
+
+    // Coloca o conteúdo dentro do arquivo temporário
+    file_put_contents($temporary, base64_decode($base64));
+
+    // Salva o caminho para possibilitar a deleção posterior do arquivo
+    $this->base64TemporaryFile = $temporary;
+
+    return $this->fromData(file_get_contents($temporary));
   }
 
   /**
@@ -129,6 +150,11 @@ class Handler
 
     // Remove do diretório temporário
     unlink($this->temporaryFile);
+
+    // Caso exista, remove o arquivo temporário de base64
+    if (!empty($this->base64TemporaryFile)) {
+      unlink($this->base64TemporaryFile);
+    }
 
     return $this;
   }
