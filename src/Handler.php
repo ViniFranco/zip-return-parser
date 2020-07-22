@@ -58,7 +58,7 @@ class Handler
     $temporaryFileName =
       'zip-return-parser-' .
       Carbon::now('America/Fortaleza')->getTimestamp() .
-      '.dat';
+      '.zip';
 
     // Salva o conteúdo em um arquivo temporário
     $temporary = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $temporaryFileName;
@@ -69,7 +69,7 @@ class Handler
     // Salva o caminho para possibilitar a deleção posterior do arquivo
     $this->base64TemporaryFile = $temporary;
 
-    return $this->fromData(file_get_contents($temporary));
+    return $this;
   }
 
   /**
@@ -110,6 +110,17 @@ class Handler
   }
 
   /**
+   * Abre o arquivo ZIP temporário criado a partir de um base64
+   *
+   * @return Handler
+   */
+  public function makeBase64()
+  {
+    $this->archive->open($this->base64TemporaryFile, ZipArchive::CREATE);
+    return $this;
+  }
+
+  /**
    * Define o arquivo atual a ser usado para trabalhar
    *
    * @param integer $index
@@ -131,6 +142,24 @@ class Handler
     if (!empty($this->current)) {
       $mime = mime_content_type(
         'zip://' . $this->temporaryFile . '#' . $this->current,
+      );
+      return FileFormatFactory::create($mime, $this->current);
+    }
+
+    return false;
+  }
+
+  /**
+   * Retorna uma instância da classe de tratamento do formato do arquivo
+   * ou false em caso de erro ou arquivo vazio, a partir da referência de
+   * base64
+   * @return FileFormatFactory|false
+   */
+  public function base64ToFormat()
+  {
+    if (!empty($this->current)) {
+      $mime = mime_content_type(
+        'zip://' . $this->base64TemporaryFile . '#' . $this->current,
       );
       return FileFormatFactory::create($mime, $this->current);
     }
