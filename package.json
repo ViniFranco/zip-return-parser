@@ -1,0 +1,16 @@
+{
+  "name": "zip-return-parser",
+  "version": "1.0.0",
+  "description": "Interpretador para arquivos de retorno em ZIP",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "private": true,
+  "author": "Vini Franco, Murilo Sandiego, Altierres Washington",
+  "license": "MIT",
+  "dependencies": {
+    "@prettier/plugin-php": "^0.14.2",
+    "prettier": "^2.0.5"
+  }
+}
