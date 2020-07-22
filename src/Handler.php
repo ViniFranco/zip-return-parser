@@ -36,11 +36,18 @@ class Handler
   protected $base64TemporaryFile;
 
   /**
-   * Arquivo atual a ser processado
+   * Canminho do arquivo atual a ser processado
    *
    * @var string
    */
   protected $current;
+
+  /**
+   * Dados do arquivo atual a ser processado
+   *
+   * @var string
+   */
+  protected $currentData;
 
   public function __construct()
   {
@@ -129,6 +136,7 @@ class Handler
   public function use(int $index = 0)
   {
     $this->current = $this->archive->getNameIndex($index);
+    $this->currentData = $this->archive->getFromIndex($index);
     return $this;
   }
 
@@ -143,7 +151,7 @@ class Handler
       $mime = mime_content_type(
         'zip://' . $this->temporaryFile . '#' . $this->current,
       );
-      return FileFormatFactory::create($mime, $this->current);
+      return FileFormatFactory::create($mime, $this->currentData);
     }
 
     return false;
@@ -158,10 +166,9 @@ class Handler
   public function base64ToFormat()
   {
     if (!empty($this->current)) {
-      $mime = mime_content_type(
-        'zip://' . $this->base64TemporaryFile . '#' . $this->current,
-      );
-      return FileFormatFactory::create($mime, $this->current);
+      $path = 'zip://' . $this->base64TemporaryFile . '#' . $this->current;
+      $mime = mime_content_type($path);
+      return FileFormatFactory::create($mime, $this->currentData);
     }
 
     return false;

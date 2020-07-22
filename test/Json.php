@@ -34,9 +34,16 @@ class Json extends TestCase
     $handler->fromData(file_get_contents('test.zip'))->make();
 
     // Usa o primeiro arquivo
+
+    /**
+     * @var JsonFileFormat
+     */
     $instance = $handler->use(0)->toFormat();
 
     // Verifica se retornou a instância da classe Json
     $this->assertTrue($instance instanceof JsonFileFormat);
+
+    // Verifica se o conteúdo do arquivo decodificado é igual ã entrada
+    $this->assertEquals($instance->getDecoded(), $data);
   }
 }

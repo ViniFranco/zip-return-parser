@@ -52,6 +52,11 @@ class Json implements FileFormat
     );
   }
 
+  public function getDecoded()
+  {
+    return json_decode($this->data, true);
+  }
+
   /**
    * Converte a string de entrada em UTF-8. Retorna false em caso de arquivo vazio.
    *
