@@ -1,9 +1,9 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser\Tests;
+namespace Vini\ZipReturnParser\Tests;
 
 use PHPUnit\Framework\TestCase;
-use ViniFranco\ZipReturnParser\Responses\Sicoob as SicoobResponse;
+use Vini\ZipReturnParser\Responses\Sicoob as SicoobResponse;
 
 class Sicoob extends TestCase
 {

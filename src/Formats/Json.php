@@ -1,8 +1,8 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser\Formats;
+namespace Vini\ZipReturnParser\Formats;
 
-use ViniFranco\ZipReturnParser\Contracts\FileFormat;
+use Vini\ZipReturnParser\Contracts\FileFormat;
 
 class Json implements FileFormat
 {

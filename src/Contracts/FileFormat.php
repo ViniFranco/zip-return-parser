@@ -1,6 +1,6 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser\Contracts;
+namespace Vini\ZipReturnParser\Contracts;
 
 interface FileFormat
 {

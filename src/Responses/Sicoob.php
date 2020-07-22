@@ -1,8 +1,8 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser\Responses;
+namespace Vini\ZipReturnParser\Responses;
 
-use ViniFranco\ZipReturnParser\Responses\BankResponse;
+use Vini\ZipReturnParser\Responses\BankResponse;
 
 /**
  * Classe responsável por fazer o tratamento da resposta da API do Sicoob.

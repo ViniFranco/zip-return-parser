@@ -1,6 +1,6 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser\Responses;
+namespace Vini\ZipReturnParser\Responses;
 
 abstract class BankResponse
 {

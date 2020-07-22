@@ -1,6 +1,6 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser\Formats;
+namespace Vini\ZipReturnParser\Formats;
 
 /**
  * Classe responsável por retornar instâncias apropriadas para tratar cada

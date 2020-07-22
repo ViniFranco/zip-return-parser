@@ -1,9 +1,9 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser\Tests;
+namespace Vini\ZipReturnParser\Tests;
 
-use ViniFranco\ZipReturnParser\Handler;
-use ViniFranco\ZipReturnParser\Formats\Json as JsonFileFormat;
+use Vini\ZipReturnParser\Handler;
+use Vini\ZipReturnParser\Formats\Json as JsonFileFormat;
 use ZipArchive;
 use PHPUnit\Framework\TestCase;
 

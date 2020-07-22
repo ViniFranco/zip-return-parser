@@ -1,8 +1,8 @@
 <?php
 
-namespace ViniFranco\ZipReturnParser;
+namespace Vini\ZipReturnParser;
 
-use ViniFranco\ZipReturnParser\Formats\FileFormatFactory;
+use Vini\ZipReturnParser\Formats\FileFormatFactory;
 use ZipArchive;
 use Carbon\Carbon;
 
