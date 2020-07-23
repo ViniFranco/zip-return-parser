@@ -156,7 +156,7 @@ class Handler
     if (!empty($this->current)) {
       if (empty($this->base64TemporaryFile)) {
         $mime = mime_content_type(
-          'zip://' . $this->temporaryFile . '#' . $this->current,
+          'zip://' . $this->temporaryFile . '#' . $this->current
         );
 
         $use = $format !== null ? $format : $mime;
@@ -165,7 +165,7 @@ class Handler
       }
 
       $mime = mime_content_type(
-        'zip://' . $this->base64TemporaryFile . '#' . $this->current,
+        'zip://' . $this->base64TemporaryFile . '#' . $this->current
       );
 
       $use = $format !== null ? $format : $mime;
