@@ -9,7 +9,7 @@ class Sicoob extends TestCase
 {
   public function testSicoob()
   {
-    // Cria uma resposta de mentira
+    // Cria uma resposta de teste
     $raw = json_encode([
       'resultado' => [
         'arquivo' => 'test',

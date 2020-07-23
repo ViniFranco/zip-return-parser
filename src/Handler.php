@@ -107,22 +107,20 @@ class Handler
 
   /**
    * Abre o arquivo ZIP temporário
-   *
+   * @throws \BadMethodCallException
    * @return Handler
    */
   public function make()
   {
-    $this->archive->open($this->temporaryFile, ZipArchive::CREATE);
-    return $this;
-  }
+    if (empty($this->temporaryFile) && empty($this->base64TemporaryFile)) {
+      throw new \BadMethodCallException('Não há nenhum arquivo adicionado.');
+    }
 
-  /**
-   * Abre o arquivo ZIP temporário criado a partir de um base64
-   *
-   * @return Handler
-   */
-  public function makeBase64()
-  {
+    if (empty($this->base64TemporaryFile) && !empty($this->temporaryFile)) {
+      $this->archive->open($this->temporaryFile, ZipArchive::CREATE);
+      return $this;
+    }
+
     $this->archive->open($this->base64TemporaryFile, ZipArchive::CREATE);
     return $this;
   }
@@ -135,9 +133,17 @@ class Handler
    */
   public function use(int $index = 0)
   {
-    $this->current = $this->archive->getNameIndex($index);
-    $this->currentData = $this->archive->getFromIndex($index);
-    return $this;
+    try {
+      if ($this->archive->count() && $this->archive->count() >= $index + 1) {
+        $this->current = $this->archive->getNameIndex($index);
+        $this->currentData = $this->archive->getFromIndex($index);
+        return $this;
+      }
+    } catch (\Exception $exception) {
+      throw new \InvalidArgumentException($exception->getMessage());
+    }
+
+    throw new \InvalidArgumentException('Índice de arquivo inválido');
   }
 
   /**
@@ -148,26 +154,17 @@ class Handler
   public function toFormat()
   {
     if (!empty($this->current)) {
+      if (empty($this->base64TemporaryFile)) {
+        $mime = mime_content_type(
+          'zip://' . $this->temporaryFile . '#' . $this->current,
+        );
+        return FileFormatFactory::create($mime, $this->currentData);
+      }
+
       $mime = mime_content_type(
-        'zip://' . $this->temporaryFile . '#' . $this->current,
+        'zip://' . $this->base64TemporaryFile . '#' . $this->current,
       );
-      return FileFormatFactory::create($mime, $this->currentData);
-    }
 
-    return false;
-  }
-
-  /**
-   * Retorna uma instância da classe de tratamento do formato do arquivo
-   * ou false em caso de erro ou arquivo vazio, a partir da referência de
-   * base64
-   * @return FileFormatFactory|false
-   */
-  public function base64ToFormat()
-  {
-    if (!empty($this->current)) {
-      $path = 'zip://' . $this->base64TemporaryFile . '#' . $this->current;
-      $mime = mime_content_type($path);
       return FileFormatFactory::create($mime, $this->currentData);
     }
 
