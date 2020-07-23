@@ -4,6 +4,6 @@ module.exports = {
   tabWidth: 2,
   useTabs: false,
   singleQuote: true,
-  trailingCommaPHP: true,
+  trailingCommaPHP: false,
   braceStyle: "psr-2",
 };
