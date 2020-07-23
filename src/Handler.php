@@ -151,21 +151,26 @@ class Handler
    * ou false em caso de erro ou arquivo vazio.
    * @return FileFormatFactory|false
    */
-  public function toFormat()
+  public function toFormat($format = null)
   {
     if (!empty($this->current)) {
       if (empty($this->base64TemporaryFile)) {
         $mime = mime_content_type(
-          'zip://' . $this->temporaryFile . '#' . $this->current
+          'zip://' . $this->temporaryFile . '#' . $this->current,
         );
-        return FileFormatFactory::create($mime, $this->currentData);
+
+        $use = $format !== null ? $format : $mime;
+
+        return FileFormatFactory::create($use, $this->currentData);
       }
 
       $mime = mime_content_type(
-        'zip://' . $this->base64TemporaryFile . '#' . $this->current
+        'zip://' . $this->base64TemporaryFile . '#' . $this->current,
       );
 
-      return FileFormatFactory::create($mime, $this->currentData);
+      $use = $format !== null ? $format : $mime;
+
+      return FileFormatFactory::create($use, $this->currentData);
     }
 
     return false;
