@@ -193,4 +193,24 @@ class Handler
 
     return $this;
   }
+
+  /**
+   * Retorna o caminho para o arquivo temporário gerado
+   * a partir da string de dados bruta.
+   * @return string
+   */
+  public function getTemporaryFilePath()
+  {
+    return $this->temporaryFile;
+  }
+
+  /**
+   * Retorna o caminho para o arquivo temporário gerado a partir
+   * da string base64 do arquivo ZIP.
+   * @return string
+   */
+  public function getBase64TemporaryFilePath()
+  {
+    return $this->base64TemporaryFile;
+  }
 }
