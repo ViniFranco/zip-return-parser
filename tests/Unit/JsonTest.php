@@ -41,7 +41,7 @@ class Json extends TestCase
     /**
      * @var JsonFileFormat
      */
-    $instance = $handler->use(0)->toFormat();
+    $instance = $handler->use(0)->toFormat('application/json');
 
     // Verifica se retornou a instância da classe Json
     $this->assertTrue($instance instanceof JsonFileFormat);
@@ -86,7 +86,7 @@ class Json extends TestCase
       ->fromBase64($base64)
       ->make()
       ->use(0)
-      ->toFormat();
+      ->toFormat('application/json');
 
     // Verifica se existe a instância de JsonFileFormat
     $this->assertTrue($instance instanceof JsonFileFormat);

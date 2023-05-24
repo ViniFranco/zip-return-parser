@@ -1,6 +1,9 @@
 <?php
 
-namespace Vini\ZipReturnParser\Formats;
+namespace Vini\ZipReturnParser\Factories;
+
+use Vini\ZipReturnParser\Formats\Json;
+use InvalidArgumentException;
 
 /**
  * Classe responsável por retornar instâncias apropriadas para tratar cada
@@ -15,7 +18,7 @@ class FileFormatFactory
    *
    * @param string $format
    * @return FileFormat
-   * @throws \InvalidArgumentException
+   * @throws InvalidArgumentException
    */
   public static function create(
     string $format = 'application/json',
@@ -25,7 +28,7 @@ class FileFormatFactory
       case 'application/json':
         return new Json($data);
       default:
-        throw new \InvalidArgumentException('Tipo de arquivo não suportado.');
+        throw new InvalidArgumentException('Tipo de arquivo não suportado.');
     }
   }
 }

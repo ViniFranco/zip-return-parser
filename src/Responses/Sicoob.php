@@ -6,8 +6,13 @@ use Vini\ZipReturnParser\Responses\BankResponse;
 
 /**
  * Classe responsável por fazer o tratamento da resposta da API do Sicoob.
- * @package ViniFranco\ZipReturnParser\Responses
+ * 
+ * @package ViniFranco\ZipReturnParser
+ * @subpackage Responses
  * @author Vini Franco <email@vinifranco.com.br>
+ * 
+ * @property string nomeArquivo Nome do arquivo retornado pela API.
+ * @property string arquivo Conteúdo do arquivo em base64.
  */
 class Sicoob extends BankResponse
 {

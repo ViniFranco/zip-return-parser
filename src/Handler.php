@@ -2,7 +2,7 @@
 
 namespace Vini\ZipReturnParser;
 
-use Vini\ZipReturnParser\Formats\FileFormatFactory;
+use Vini\ZipReturnParser\Factories\FileFormatFactory;
 use ZipArchive;
 use Carbon\Carbon;
 

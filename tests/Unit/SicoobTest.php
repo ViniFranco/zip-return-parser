@@ -3,11 +3,11 @@
 namespace Vini\ZipReturnParser\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Vini\ZipReturnParser\Responses\Sicoob as SicoobResponse;
+use Vini\ZipReturnParser\Responses\Sicoob as Sicoob;
 
-class Sicoob extends TestCase
+class SicoobTest extends TestCase
 {
-  public function testSicoob()
+  public function testSicoobResponse()
   {
     // Cria uma resposta de teste
     $raw = json_encode([
@@ -17,7 +17,7 @@ class Sicoob extends TestCase
       ],
     ]);
 
-    $response = (new SicoobResponse($raw))->format();
+    $response = (new Sicoob($raw))->format();
 
     $this->assertTrue($response->arquivo === 'test');
     $this->assertTrue($response->nomeArquivo === 'test.zip');

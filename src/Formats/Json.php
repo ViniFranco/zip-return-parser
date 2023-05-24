@@ -2,41 +2,11 @@
 
 namespace Vini\ZipReturnParser\Formats;
 
-use Vini\ZipReturnParser\Contracts\FileFormat;
-
-class Json implements FileFormat
+/**
+ * Classe que representa um arquivo JSON.
+ */
+class Json extends AbstractFormat
 {
-  /**
-   * Dados do arquivo.
-   *
-   * @var string
-   */
-  protected $data;
-
-  public function __construct($data)
-  {
-    $this->data = $data;
-  }
-
-  /**
-   * Retorna o arquivo codificado em base64
-   *
-   * @return string
-   */
-  public function getBase64()
-  {
-    return base64_encode($this->data);
-  }
-
-  /**
-   * Retorna a string bruta contendo os dados do arquivo
-   *
-   * @return string
-   */
-  public function getRawString()
-  {
-    return $this->data;
-  }
 
   /**
    * Retorna os dados codificados em uma string JSON ou false em caso de erro
@@ -46,13 +16,15 @@ class Json implements FileFormat
    */
   public function getEncoded()
   {
-    return json_encode(
-      $this->utf8($this->data),
-      JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
-    );
+    return json_encode($this->utf8($this->data));
   }
 
-  public function getDecoded()
+  /**
+   * Retorna os dados do arquivo decodificados em forma de array associativo.
+   * 
+   * @return array
+   */
+  public function getDecoded(): array
   {
     return json_decode($this->data, true);
   }

@@ -7,7 +7,7 @@ abstract class BankResponse
   /**
    * Resposta em formato de texto
    *
-   * @var [type]
+   * @var string
    */
   protected $rawResponse;
 
@@ -20,8 +20,8 @@ abstract class BankResponse
   {
     $json =
       $fromFormat !== null
-        ? $fromFormat
-        : json_decode($this->rawResponse, true);
+      ? $fromFormat
+      : json_decode($this->rawResponse, true);
 
     if ($json) {
       foreach ($json as $k => $v) {

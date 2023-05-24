@@ -5,7 +5,9 @@ namespace Vini\ZipReturnParser\Tests;
 use PHPUnit\Framework\TestCase;
 use ZipArchive;
 use Vini\ZipReturnParser\Handler as ZipHandler;
-class Handler extends TestCase
+
+
+class HandlerTest extends TestCase
 {
   public function testBadMethodCallInMake()
   {
