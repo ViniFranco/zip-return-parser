@@ -12,14 +12,13 @@ formato ZIP.
 
 ## Requerimentos
 
-- PHP 5.6 ou mais recente (PHP 7 recomendado)
+- PHP 7.0 ou mais recente.
 - [PHP extensão ZIP](https://www.php.net/manual/pt_BR/zip.installation.php)
 - [PHP extensão Mbstring](https://www.php.net/manual/pt_BR/mbstring.installation.php)
 
 ## Motivação
 
-Algumas APIs de bancos retornam arquivos zipados, às vezes codificados em formato base64 em respostas de API. Para facilitar o processo, este pacote contém funções de processamento
-comum para tais arquivos.
+Algumas APIs de bancos retornam os arquivos - seja de movimentação, remessa ou qualquer outro tipo de retorno - zipados, codificados em formato base64 em respostas de API. Para facilitar o processo, este pacote contém funções de processamento comum para tais arquivos.
 
 ### Uso
 
@@ -27,13 +26,16 @@ Exemplo com o formato da API do banco Sicoob, que tem um campo 'resultado' e um 
 que está codificado em formato base64. O arquivo que está dentro do ZIP é um JSON:
 
 ```php
+  use \Vini\ZipReturnParser\Handler;
+  use \Vini\ZipReturnParser\Responses\Sicoob;
+  
   // ... busca o arquivo na API do banco: $respostaApi
   
   // Cria uma instância do handler
-  $handler = new \Vini\ZipReturnParser\Handler();
+  $handler = new Handler();
 
   // Cria o formato de resposta
-  $response = (new \Vini\ZipReturnParser\Responses\Sicoob($respostaApi))->format();
+  $response = (new Sicoob($respostaApi))->format();
 
   // Passa o arquivo para o handler
   $handler->fromBase64($response->arquivo)->make();
@@ -50,11 +52,9 @@ que está codificado em formato base64. O arquivo que está dentro do ZIP é um 
 
 ### Créditos
 
-O pacote foi desenvolvido pelo time do projeto [DConta](https://dconta.com.br)
-da [DFranquias](https://dfranquias.com):
+Agradeço a colaboração dos amigos nos testes e processo de elaboração da ideia que tornou esse pacote realidade:
 
 - [Murilo Sandiego](https://github.com/murilosandiego)
-- [Vini Franco](https://github.com/ViniFranco)
 - Altierres Washington
 
 ### Licença

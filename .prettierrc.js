@@ -1,5 +1,5 @@
 module.exports = {
-  phpVersion: '5.6',
+  phpVersion: '7.0',
   printWidth: 80,
   tabWidth: 2,
   useTabs: false,
