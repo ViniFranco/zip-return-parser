@@ -13,22 +13,22 @@ use InvalidArgumentException;
  */
 class FileFormatFactory
 {
-  /**
-   * Retorna a classe de tratamento do formato de arquivo.
-   *
-   * @param string $format
-   * @return FileFormat
-   * @throws InvalidArgumentException
-   */
-  public static function create(
-    string $format = 'application/json',
-    string $data
-  ) {
-    switch ($format) {
+    /**
+     * Retorna a classe de tratamento do formato de arquivo.
+     *
+     * @param string $format
+     *
+     * @throws InvalidArgumentException
+     */
+    public static function create(
+        string $format = 'application/json',
+        string $data
+    ): Json {
+        switch ($format) {
       case 'application/json':
         return new Json($data);
       default:
         throw new InvalidArgumentException('Tipo de arquivo não suportado.');
     }
-  }
+    }
 }

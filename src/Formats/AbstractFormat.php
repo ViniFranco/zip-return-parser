@@ -11,7 +11,7 @@ abstract class AbstractFormat implements FileFormat
 {
     /**
      * Conteúdo do arquivo.
-     * 
+     *
      * @var string
      */
     protected $data;

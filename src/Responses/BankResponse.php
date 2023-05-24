@@ -4,33 +4,36 @@ namespace Vini\ZipReturnParser\Responses;
 
 abstract class BankResponse
 {
-  /**
-   * Resposta em formato de texto
-   *
-   * @var string
-   */
-  protected $rawResponse;
+    /**
+     * Resposta em formato de texto
+     *
+     * @var string
+     */
+    protected $rawResponse;
 
-  public function __construct(string $input)
-  {
-    $this->rawResponse = $input;
-  }
+    public function __construct(string $input)
+    {
+        $this->rawResponse = $input;
+    }
 
-  public function parse($fromFormat)
-  {
-    $json =
+    /**
+     * @return static
+     */
+    public function parse($fromFormat): self
+    {
+        $json =
       $fromFormat !== null
       ? $fromFormat
       : json_decode($this->rawResponse, true);
 
-    if ($json) {
-      foreach ($json as $k => $v) {
-        $this->$k = $v;
-      }
+        if ($json) {
+            foreach ($json as $k => $v) {
+                $this->$k = $v;
+            }
 
-      return $this;
+            return $this;
+        }
+
+        return $this;
     }
-
-    return $this;
-  }
 }

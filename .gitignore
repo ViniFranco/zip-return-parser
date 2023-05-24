@@ -25,3 +25,6 @@ Homestead.json
 # Lock files
 composer.lock
 package-lock.json
+
+# Arquivos de cache
+*.cache
