@@ -2,15 +2,17 @@
 
 namespace Vini\ZipReturnParser;
 
+use Carbon\Carbon;
+use LogicException;
+use OutOfRangeException;
 use Vini\ZipReturnParser\Factories\FileFormatFactory;
 use ZipArchive;
-use Carbon\Carbon;
 
 /**
  * Classe responsável por fazer o tratamento do arquivo em formato ZIP
+ * 
  * @package ViniFranco\ZipReturnParser
  * @author Vini Franco <email@vinifranco.com.br>
- * @SuppressWarnings(PHPMD.StaticAccess)
  */
 class Handler
 {
@@ -106,14 +108,14 @@ class Handler
     }
 
     /**
-     * Abre o arquivo ZIP temporário
-     * @throws \BadMethodCallException
-     * @return Handler
+     * Abre o arquivo ZIP temporário.
+     * 
+     * @throws LogicException Caso não haja nenhum arquivo adicionado.
      */
-    public function make()
+    public function make(): self
     {
         if (empty($this->temporaryFile) && empty($this->base64TemporaryFile)) {
-            throw new \BadMethodCallException('Não há nenhum arquivo adicionado.');
+            throw new LogicException('Não há nenhum arquivo adicionado.');
         }
 
         if (empty($this->base64TemporaryFile) && !empty($this->temporaryFile)) {
@@ -129,52 +131,41 @@ class Handler
      * Define o arquivo atual a ser usado para trabalhar
      *
      * @param integer $index
-     * @return Handler
      */
-    public function use(int $index = 0)
+    public function use(int $index = 0): self
     {
-        try {
-            if ($this->archive->count() && $this->archive->count() >= $index + 1) {
-                $this->current = $this->archive->getNameIndex($index);
-                $this->currentData = $this->archive->getFromIndex($index);
-                return $this;
-            }
-        } catch (\Exception $exception) {
-            throw new \InvalidArgumentException($exception->getMessage());
+        if ($this->exists($index)) {
+            // Define o nome do arquivo sendo usado.
+            $this->current = $this->archive->getNameIndex($index);
+            
+            // Puxa o conteúdo do arquivo.
+            $this->currentData = $this->archive->getFromIndex($index);
+            
+            return $this;
         }
 
-        throw new \InvalidArgumentException('Índice de arquivo inválido');
+        throw new OutOfRangeException('Índice de arquivo inválido fornecido.');
     }
 
     /**
      * Retorna uma instância da classe de tratamento do formato do arquivo
      * ou false em caso de erro ou arquivo vazio.
      *
-     * @return Factories\FileFormat|false
+     * @return Factories\FileFormat
+     * @throws LogicException caso não haja nenhum arquivo selecionado.
      */
     public function toFormat($format = null)
     {
         if (!empty($this->current)) {
-            if (empty($this->base64TemporaryFile)) {
-                $mime = mime_content_type(
-                    'zip://' . $this->temporaryFile . '#' . $this->current
-                );
-
-                $use = $format !== null ? $format : $mime;
-
-                return FileFormatFactory::create($use, $this->currentData);
-            }
-
+            // Verifica o tipo MIME do arquivo. Caso não haja arquivo comum, usa o base 64.
             $mime = mime_content_type(
-                'zip://' . $this->base64TemporaryFile . '#' . $this->current
+                'zip://' . $this->temporaryFile ?? $this->base64TemporaryFile . '#' . $this->current
             );
 
-            $use = $format !== null ? $format : $mime;
-
-            return FileFormatFactory::create($use, $this->currentData);
+            return FileFormatFactory::create($format ?? $mime, $this->currentData);
         }
 
-        return false;
+        throw new LogicException('Não há arquivo selecionado.');
     }
 
     /**
@@ -203,6 +194,7 @@ class Handler
     /**
      * Retorna o caminho para o arquivo temporário gerado
      * a partir da string de dados bruta.
+     * 
      * @return string
      */
     public function getTemporaryFilePath()
@@ -213,10 +205,38 @@ class Handler
     /**
      * Retorna o caminho para o arquivo temporário gerado a partir
      * da string base64 do arquivo ZIP.
+     * 
      * @return string
      */
     public function getBase64TemporaryFilePath()
     {
         return $this->base64TemporaryFile;
+    }
+
+    /**
+     * Usa o primeiro índice do arquivo ZIP.
+     */
+    public function first(): self
+    {
+        return $this->use();
+    }
+
+    /**
+     * Usa o último índice do arquivo ZIP.
+     */
+    public function last(): self
+    {
+        return $this->use($this->archive->count() - 1);
+    }
+
+    /**
+     * Retorna se um índice existe no arquivo ZIP.
+     *
+     * @param integer $index
+     * @return boolean
+     */
+    public function exists(int $index): bool
+    {
+        return $this->archive->count() && $this->archive->count() >= $index + 1;
     }
 }

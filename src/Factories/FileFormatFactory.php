@@ -18,7 +18,7 @@ class FileFormatFactory
      *
      * @param string $format
      *
-     * @throws InvalidArgumentException
+     * @throws DomainException
      */
     public static function create(
         string $format = 'application/json',
