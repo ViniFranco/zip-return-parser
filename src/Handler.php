@@ -10,7 +10,7 @@ use ZipArchive;
 
 /**
  * Classe responsável por fazer o tratamento do arquivo em formato ZIP
- * 
+ *
  * @package ViniFranco\ZipReturnParser
  * @author Vini Franco <email@vinifranco.com.br>
  */
@@ -65,9 +65,9 @@ class Handler
     public function fromBase64($base64)
     {
         $temporaryFileName =
-      'zip-return-parser-' .
-      Carbon::now('America/Fortaleza')->getTimestamp() .
-      '.zip';
+            'zip-return-parser-' .
+            Carbon::now('America/Fortaleza')->getTimestamp() .
+            '.zip';
 
         // Salva o conteúdo em um arquivo temporário
         $temporary = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $temporaryFileName;
@@ -91,9 +91,9 @@ class Handler
     {
         // Gera um nome de arquivo temporário
         $temporaryFileName =
-      'zip-return-parser-' .
-      Carbon::now('America/Fortaleza')->getTimestamp() .
-      '.zip';
+            'zip-return-parser-' .
+            Carbon::now('America/Fortaleza')->getTimestamp() .
+            '.zip';
 
         // Salva o conteúdo em um arquivo temporário
         $temporary = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $temporaryFileName;
@@ -109,7 +109,7 @@ class Handler
 
     /**
      * Abre o arquivo ZIP temporário.
-     * 
+     *
      * @throws LogicException Caso não haja nenhum arquivo adicionado.
      */
     public function make(): self
@@ -137,10 +137,10 @@ class Handler
         if ($this->exists($index)) {
             // Define o nome do arquivo sendo usado.
             $this->current = $this->archive->getNameIndex($index);
-            
+
             // Puxa o conteúdo do arquivo.
             $this->currentData = $this->archive->getFromIndex($index);
-            
+
             return $this;
         }
 
@@ -194,7 +194,7 @@ class Handler
     /**
      * Retorna o caminho para o arquivo temporário gerado
      * a partir da string de dados bruta.
-     * 
+     *
      * @return string
      */
     public function getTemporaryFilePath()
@@ -205,7 +205,7 @@ class Handler
     /**
      * Retorna o caminho para o arquivo temporário gerado a partir
      * da string base64 do arquivo ZIP.
-     * 
+     *
      * @return string
      */
     public function getBase64TemporaryFilePath()
