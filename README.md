@@ -12,7 +12,7 @@ formato ZIP.
 
 ## Requerimentos
 
-- PHP 7.0 ou mais recente.
+- PHP >=7.2.5 e <8.0.0. **Suporte ao PHP 8 será adicionado na versão 2.x.**
 - [PHP extensão ZIP](https://www.php.net/manual/pt_BR/zip.installation.php)
 - [PHP extensão Mbstring](https://www.php.net/manual/pt_BR/mbstring.installation.php)
 
