@@ -157,10 +157,13 @@ class Handler
     public function toFormat($format = null)
     {
         if (!empty($this->current)) {
+
+            $file = $this->temporaryFile ?? $this->base64TemporaryFile;
+
+            $filepath = 'zip://' . $file . '#' . $this->current;
+
             // Verifica o tipo MIME do arquivo. Caso não haja arquivo comum, usa o base 64.
-            $mime = mime_content_type(
-                'zip://' . $this->temporaryFile ?? $this->base64TemporaryFile . '#' . $this->current
-            );
+            $mime = mime_content_type($filepath);
 
             return FileFormatFactory::create($format ?? $mime, $this->currentData);
         }
