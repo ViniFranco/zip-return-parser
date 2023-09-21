@@ -12,7 +12,7 @@ formato ZIP.
 
 ## Requerimentos
 
-- PHP >=7.2.5 e <8.0.0. **Suporte ao PHP 8 será adicionado na versão 2.x.**
+- PHP >=7.2.5.
 - [PHP extensão ZIP](https://www.php.net/manual/pt_BR/zip.installation.php)
 - [PHP extensão Mbstring](https://www.php.net/manual/pt_BR/mbstring.installation.php)
 
@@ -26,8 +26,9 @@ Exemplo com o formato da API do banco Sicoob, que tem um campo 'resultado' e um 
 que está codificado em formato base64. O arquivo que está dentro do ZIP é um JSON:
 
 ```php
-  use \Vini\ZipReturnParser\Handler;
-  use \Vini\ZipReturnParser\Responses\Sicoob;
+  use Vini\ZipReturnParser\Handler;
+  use Vini\ZipReturnParser\Responses\Sicoob;
+  use Vini\ZipReturnParser\Factories\FileFormatFactory;
   
   // ... busca o arquivo na API do banco: $respostaApi
   
@@ -41,7 +42,7 @@ que está codificado em formato base64. O arquivo que está dentro do ZIP é um 
   $handler->fromBase64($response->arquivo)->make();
 
   // Usa o primeiro arquivo e cria uma instância da classe que trata JSON automaticamente
-  $file = $handler->use(0)->toFormat();
+  $file = $handler->first()->toFormat(FileFormatFactory::FORMAT_JSON);
 
   // Imprime na tela o conteúdo do arquivo (nesse passo qualquer outro processamento pode ser feito)
   var_dump($file->getDecoded());
