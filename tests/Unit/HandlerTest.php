@@ -2,6 +2,8 @@
 
 namespace Vini\ZipReturnParser\Tests;
 
+use LogicException;
+use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 use ZipArchive;
 use Vini\ZipReturnParser\Handler as ZipHandler;
@@ -9,46 +11,25 @@ use Vini\ZipReturnParser\Handler as ZipHandler;
 
 class HandlerTest extends TestCase
 {
-  public function testBadMethodCallInMake()
+  /**
+   * Conteúdo de um arquivo zipado de teste, codificado em base64.
+   *
+   * @var string
+   */
+  protected static $base64;
+
+  /**
+   * Instância do Zip Handler.
+   *
+   * @var ZipHandler
+   */
+  protected $handler;
+
+  protected function setUp()
   {
-    // Cria o handler
-    $handler = new ZipHandler();
+    $this->handler = new ZipHandler();
 
-    // Espera por uma exceção BadMethodCall
-    $this->expectException(\BadMethodCallException::class);
-
-    $handler->make();
-  }
-
-  public function testInvalidArgumentExceptionInUse()
-  {
-    // Cria o handler
-    $handler = new ZipHandler();
-
-    // Espera por uma exceção InvalidArgument
-    $this->expectException(\InvalidArgumentException::class);
-
-    $handler->use(0);
-  }
-
-  public function testFalseReturnInToFormat()
-  {
-    // Cria o handler
-    $handler = new ZipHandler();
-
-    $false = $handler->toFormat();
-
-    $this->assertEquals(false, $false);
-  }
-
-  public function testClean()
-  {
-    // Cria um arquivo qualquer em formato json
-    $data = [
-      'json' => 'test',
-    ];
-
-    $jsonString = json_encode($data, JSON_UNESCAPED_UNICODE);
+    $jsonString = json_encode(['json' => 'test'], JSON_UNESCAPED_UNICODE);
 
     // Cria o arquivo ZIP
     $zip = new ZipArchive();
@@ -60,21 +41,47 @@ class HandlerTest extends TestCase
     }
 
     // Transforma em base64 o conteúdo do test.zip
-    $base64 = base64_encode(file_get_contents('testb64.zip'));
+    static::$base64 = base64_encode(file_get_contents('testb64.zip'));
+  }
 
+  protected function tearDown()
+  {
     // Remove o test.zip
     unlink('testb64.zip');
+  }
 
-    // Chama o handler
-    $handler = new ZipHandler();
+  public function testLogicExceptionInMake()
+  {
+    // Espera por uma exceção
+    $this->expectException(LogicException::class);
 
+    $this->handler->make();
+  }
+
+  public function testOutOfRangeExceptionInUse()
+  {
+    // Espera por uma exceção
+    $this->expectException(OutOfRangeException::class);
+
+    $this->handler->fromBase64(static::$base64)->make()->use(1);
+  }
+
+  public function testLogicExceptionInToFormat()
+  {
+    $this->expectException(LogicException::class);
+
+    $this->handler->toFormat();
+  }
+
+  public function testClean()
+  {
     // Testa a limpeza
-    $handler
-      ->fromBase64($base64)
+    $this->handler
+      ->fromBase64(static::$base64)
       ->make()
       ->clean();
 
     // Verifica se o arquivo de fato foi removido
-    $this->assertFalse(file_exists($handler->getBase64TemporaryFilePath()));
+    $this->assertFalse(file_exists($this->handler->getBase64TemporaryFilePath()));
   }
 }

@@ -3,7 +3,7 @@
 namespace Vini\ZipReturnParser\Factories;
 
 use Vini\ZipReturnParser\Formats\Json;
-use InvalidArgumentException;
+use DomainException;
 
 /**
  * Classe responsável por retornar instâncias apropriadas para tratar cada
@@ -13,22 +13,24 @@ use InvalidArgumentException;
  */
 class FileFormatFactory
 {
-    /**
-     * Retorna a classe de tratamento do formato de arquivo.
-     *
-     * @param string $format
-     *
-     * @throws InvalidArgumentException
-     */
-    public static function create(
-        string $format = 'application/json',
-        string $data
-    ): Json {
-        switch ($format) {
+  public const FORMAT_JSON = 'application/json';
+
+  /**
+   * Retorna a classe de tratamento do formato de arquivo.
+   *
+   * @param string $format
+   *
+   * @throws DomainException
+   */
+  public static function create(
+    string $format = 'application/json',
+    string $data
+  ): Json {
+    switch ($format) {
       case 'application/json':
         return new Json($data);
       default:
-        throw new InvalidArgumentException('Tipo de arquivo não suportado.');
+        throw new DomainException('Tipo de arquivo não suportado.');
     }
-    }
+  }
 }

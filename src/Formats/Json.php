@@ -7,12 +7,12 @@ namespace Vini\ZipReturnParser\Formats;
  */
 class Json extends AbstractFormat
 {
-  /**
-   * Retorna os dados codificados em uma string JSON ou false em caso de erro
-   *
-   * @param boolean $escape
-   * @return string|false
-   */
+    /**
+     * Retorna os dados codificados em uma string JSON ou false em caso de erro
+     *
+     * @param boolean $escape
+     * @return string|false
+     */
     public function getEncoded()
     {
         return json_encode($this->utf8($this->data));

@@ -19,7 +19,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.0",
+        "php": "^7.2.5|^8.0",
         "ext-zip": "*",
         "ext-mbstring": "*",
         "nesbot/carbon": "^2.0"
@@ -42,6 +42,6 @@
     "scripts": {
         "test": "vendor/bin/phpunit --testdox",
         "fix-style": "php-cs-fixer fix ./src --diff",
-        "static-analyze": "psalm --threads=8 --diff --php-version=7.0"
+        "static-analyze": "psalm --threads=8 --diff --php-version=7.2.5"
     }
 }
